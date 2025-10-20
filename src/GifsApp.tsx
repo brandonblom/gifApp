@@ -4,6 +4,7 @@ import { MockGifs } from "./gifs/components/GifsList";
 import { CustomHeader } from "./shared/components/CustomHeader";
 import { PreviousSearches } from "./gifs/components/PreviousSearches";
 import { useState } from "react";
+import { getGifsByQuery } from "./gifs/actions/get-gifs-by-query.actions";
 
 export const GifsApp = () => {
   const [previousTerms, setPreviousTerms] = useState(["dragon ball z"]);
@@ -12,7 +13,7 @@ export const GifsApp = () => {
     console.log(term);
   };
 
-  const handleSerach = (query: string = '') => {
+  const handleSerach = async(query: string = '') => {
     query = query.trim().toLowerCase();
 
     if (query.length === 0) return;
@@ -20,6 +21,8 @@ export const GifsApp = () => {
     if (previousTerms.includes(query)) return;
 
     setPreviousTerms([query, ...previousTerms].splice(0, 8));
+    
+    const gifs = await getGifsByQuery(query)
   };
 
   return (
